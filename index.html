@@ -1,1004 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Minecraft Mobile Tier List</title>
-
-    <!-- Open Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: #f5f5f7;
-            color: #1d1d1f;
-            font-family: "Open Sans", sans-serif;
-        }
-
-        .card {
-            width: 100%;
-            max-width: 480px;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.07),
-                0 2px 8px rgba(0, 0, 0, 0.04);
-
-            animation: cardIn 0.5s ease-out;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 26px;
-        }
-
-        .brand-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            background: #f1f1f3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-        }
-
-        .brand-name {
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: -0.2px;
-        }
-
-        .brand-subtitle {
-            margin-top: 2px;
-            font-size: 12px;
-            color: #86868b;
-        }
-
-        h1 {
-            font-size: 28px;
-            line-height: 1.22;
-            letter-spacing: -0.7px;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
-
-        .intro {
-            font-size: 15px;
-            line-height: 1.65;
-            color: #55555a;
-            margin-bottom: 20px;
-        }
-
-        .email-notice {
-            background: #f7f7f8;
-            border-radius: 16px;
-            padding: 17px;
-            margin-bottom: 24px;
-        }
-
-        .email-title {
-            font-size: 14px;
-            font-weight: 800;
-            margin-bottom: 7px;
-        }
-
-        .email-text {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #66666b;
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        button {
-            width: 100%;
-            min-height: 52px;
-            border: none;
-            border-radius: 15px;
-            padding: 14px 20px;
-            font-family: "Open Sans", sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-
-            transition:
-                transform 0.18s ease,
-                opacity 0.18s ease,
-                box-shadow 0.18s ease;
-        }
-
-        .apply-button {
-            background: #1d1d1f;
-            color: #ffffff;
-        }
-
-        .status-button {
-            background: #f0f0f2;
-            color: #1d1d1f;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        button:active {
-            transform: scale(0.97);
-        }
-
-        .footer {
-            margin-top: 22px;
-            padding-top: 18px;
-            border-top: 1px solid #eeeeef;
-            text-align: center;
-            font-size: 11px;
-            line-height: 1.6;
-            color: #99999e;
-        }
-
-        .footer strong {
-            color: #707075;
-            font-weight: 800;
-        }
-
-        /* ---------------- STATUS MODAL ---------------- */
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-
-            background: rgba(0, 0, 0, 0.22);
-            backdrop-filter: blur(7px);
-            -webkit-backdrop-filter: blur(7px);
-
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-
-            transition:
-                opacity 0.25s ease,
-                visibility 0.25s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .status-card {
-            width: 100%;
-            max-width: 420px;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 28px;
-
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.16);
-
-            transform: translateY(20px) scale(0.97);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .status-card {
-            transform: translateY(0) scale(1);
-        }
-
-        .status-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px;
-        }
-
-        .status-header h2 {
-            font-size: 21px;
-            font-weight: 800;
-            letter-spacing: -0.4px;
-        }
-
-        .close-button {
-            width: 34px;
-            min-height: 34px;
-            height: 34px;
-            padding: 0;
-            border-radius: 50%;
-            background: #f0f0f2;
-            color: #55555a;
-            font-size: 20px;
-            line-height: 1;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .status-input {
-            width: 100%;
-            height: 50px;
-            border: 1px solid #dedee2;
-            border-radius: 14px;
-            outline: none;
-            padding: 0 15px;
-
-            font-family: "Open Sans", sans-serif;
-            font-size: 14px;
-            color: #1d1d1f;
-
-            transition:
-                border-color 0.18s ease,
-                box-shadow 0.18s ease;
-        }
-
-        .status-input:focus {
-            border-color: #99999f;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
-        }
-
-        .check-button {
-            margin-top: 12px;
-            background: #1d1d1f;
-            color: white;
-        }
-
-        .status-result {
-            margin-top: 18px;
-            padding: 18px;
-            border-radius: 16px;
-            display: none;
-            animation: resultIn 0.3s ease;
-        }
-
-        .status-result.show {
-            display: block;
-        }
-
-        .status-result.approved {
-            background: #edf8f1;
-        }
-
-        .status-result.denied {
-            background: #fff0f0;
-        }
-
-        .status-result.pending {
-            background: #fff8e8;
-        }
-
-        .status-result.error {
-            background: #f3f3f5;
-        }
-
-        .result-title {
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 7px;
-        }
-
-        .result-text {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #55555a;
-        }
-
-        .result-id {
-            margin-top: 11px;
-            font-size: 11px;
-            color: #88888e;
-            word-break: break-all;
-        }
-
-        .loading {
-            display: none;
-            margin-top: 16px;
-            text-align: center;
-            font-size: 13px;
-            color: #77777d;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        /* ---------------- ANIMATIONS ---------------- */
-
-        @keyframes cardIn {
-            from {
-                opacity: 0;
-                transform: translateY(18px) scale(0.98);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes resultIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ---------------- MOBILE ---------------- */
-
-        @media (max-width: 500px) {
-
-            body {
-                padding: 16px;
-            }
-
-            .card {
-                padding: 27px 22px 23px;
-                border-radius: 21px;
-            }
-
-            h1 {
-                font-size: 25px;
-            }
-
-            .status-card {
-                padding: 24px 21px;
-                border-radius: 21px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>minecraftmobile.in — Domain For Sale</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #070707;
+      color: #fff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      text-align: center;
+    }
+
+    .domain {
+      font-size: clamp(38px, 9vw, 72px);
+      font-weight: 800;
+      letter-spacing: -3px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #fff, #8f8f8f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 13px;
+      border: 1px solid #292929;
+      border-radius: 999px;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 28px;
+      background: #101010;
+    }
+
+    h1 {
+      font-size: clamp(28px, 6vw, 42px);
+      margin-bottom: 12px;
+      letter-spacing: -1.5px;
+    }
+
+    .subtitle {
+      color: #929292;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .card {
+      margin-top: 34px;
+      padding: 28px;
+      border: 1px solid #242424;
+      border-radius: 22px;
+      background: linear-gradient(145deg, #111, #0b0b0b);
+      box-shadow: 0 20px 70px rgba(0,0,0,.4);
+    }
+
+    .price-label {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .price {
+      font-size: 42px;
+      font-weight: 750;
+      letter-spacing: -1px;
+    }
+
+    .detected {
+      margin-top: 24px;
+      padding: 16px;
+      background: #151515;
+      border-radius: 14px;
+    }
+
+    .detected-title {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .local-price {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .rate {
+      color: #666;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .currency-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid #292929;
+      background: #111;
+      color: #fff;
+      outline: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .buy-btn {
+      width: 100%;
+      margin-top: 18px;
+      padding: 16px;
+      border: 0;
+      border-radius: 14px;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      opacity: .9;
+    }
+
+    .contact {
+      display: none;
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 16px;
+      background: #151515;
+      border: 1px solid #252525;
+      text-align: left;
+    }
+
+    .contact.show {
+      display: block;
+    }
+
+    .contact h3 {
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    .contact a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 0;
+      border-bottom: 1px solid #242424;
+      font-size: 14px;
+    }
+
+    .contact a:last-child {
+      border-bottom: 0;
+    }
+
+    .contact span {
+      color: #777;
+      display: block;
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #555;
+      font-size: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        padding: 22px;
+      }
+
+      .domain {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- MAIN CARD -->
-    <main class="card">
-
-        <div class="brand">
-
-            <div class="brand-icon">
-                ⛏
-            </div>
-
-            <div>
-                <div class="brand-name">
-                    Minecraft Mobile
-                </div>
-
-                <div class="brand-subtitle">
-                    Tier List
-                </div>
-            </div>
-
-        </div>
-
-
-        <h1>
-            We're Currently Looking for Top 50 Players
-        </h1>
-
-
-        <p class="intro">
-            Think you have what it takes to be ranked?
-            Apply for the Minecraft Mobile Tier List right now
-            and show us what you've got.
-        </p>
-
-
-        <!-- EMAIL INFORMATION -->
-        <div class="email-notice">
-
-            <div class="email-title">
-                Already submitted your application?
-            </div>
-
-            <div class="email-text">
-                Please check your email for the Status ID sent by
-                our team. If you don't receive it within
-                <strong>24 hours</strong>, please check your
-                spam or junk folder.
-                <br><br>
-                You can use your Status ID below to check your
-                current application status.
-            </div>
-
-        </div>
-
-
-        <!-- BUTTONS -->
-        <div class="buttons">
-
-            <button
-                class="apply-button"
-                onclick="openApplication();">
-                Apply
-            </button>
-
-            <button
-                class="status-button"
-                onclick="openStatus();">
-                Check Status
-            </button>
-
-        </div>
-
-
-        <!-- FOOTER -->
-        <div class="footer">
-
-            The Minecraft Mobile Tier List is independently
-            operated by <strong>HAZIK</strong> and is not
-            affiliated with, endorsed by, or sponsored by
-            Mojang Studios or Microsoft.
-
-        </div>
-
-    </main>
-
-
-    <!-- STATUS MODAL -->
-    <div
-        class="modal-overlay"
-        id="statusModal"
-        onclick="outsideClose(event);">
-
-        <div
-            class="status-card"
-            onclick="event.stopPropagation();">
-
-
-            <div class="status-header">
-
-                <h2>
-                    Check Application
-                </h2>
-
-                <button
-                    class="close-button"
-                    onclick="closeStatus();"
-                    aria-label="Close">
-                    ×
-                </button>
-
-            </div>
-
-
-            <label
-                class="input-label"
-                for="statusId">
-                Status ID
-            </label>
-
-
-            <input
-                id="statusId"
-                class="status-input"
-                type="text"
-                autocomplete="off"
-                placeholder="Enter your Status ID">
-
-
-            <button
-                class="check-button"
-                onclick="checkStatus();">
-                Check Status
-            </button>
-
-
-            <div
-                class="loading"
-                id="loading">
-                Checking your application...
-            </div>
-
-
-            <div
-                class="status-result"
-                id="statusResult">
-
-                <div
-                    class="result-title"
-                    id="resultTitle">
-                </div>
-
-                <div
-                    class="result-text"
-                    id="resultText">
-                </div>
-
-                <div
-                    class="result-id"
-                    id="resultId">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <script>
-
-        /*
-         * ---------------------------------------------------------
-         * CONFIGURATION
-         * ---------------------------------------------------------
-         */
-
-        const APPLICATION_URL =
-            "https://forms.gle/yWiUff9kcVVehUHB9";
-
-        const STATUS_FILE_URL =
-            "https://raw.githubusercontent.com/hazik-mir/minecraftmobile.in/main/status";
-
-
-        /*
-         * ---------------------------------------------------------
-         * APPLY
-         * ---------------------------------------------------------
-         */
-
-        function openApplication() {
-            window.location.href = APPLICATION_URL;
-        }
-
-
-        /*
-         * ---------------------------------------------------------
-         * OPEN / CLOSE STATUS
-         * ---------------------------------------------------------
-         */
-
-        function openStatus() {
-
-            const modal =
-                document.getElementById("statusModal");
-
-            modal.classList.add("active");
-
-            setTimeout(() => {
-                document
-                    .getElementById("statusId")
-                    .focus();
-            }, 250);
-        }
-
-
-        function closeStatus() {
-
-            const modal =
-                document.getElementById("statusModal");
-
-            modal.classList.remove("active");
-
-            document
-                .getElementById("statusResult")
-                .className = "status-result";
-
-            document
-                .getElementById("statusId")
-                .value = "";
-
-            document
-                .getElementById("loading")
-                .classList.remove("show");
-        }
-
-
-        function outsideClose(event) {
-
-            if (
-                event.target ===
-                document.getElementById("statusModal")
-            ) {
-                closeStatus();
-            }
-        }
-
-
-        /*
-         * ---------------------------------------------------------
-         * STATUS CHECKER
-         * ---------------------------------------------------------
-         *
-         * Supported format:
-         *
-         * userid:true
-         * userid:false
-         * userid:pending
-         *
-         * Example:
-         *
-         * 12342hsdick:true
-         * hdhwddii288:false
-         * fdjjjjd:pending
-         *
-         * Blank lines and lines beginning with # are ignored.
-         * ---------------------------------------------------------
-         */
-
-        async function checkStatus() {
-
-            const input =
-                document
-                    .getElementById("statusId")
-                    .value
-                    .trim();
-
-            const loading =
-                document.getElementById("loading");
-
-            const result =
-                document.getElementById("statusResult");
-
-            const title =
-                document.getElementById("resultTitle");
-
-            const text =
-                document.getElementById("resultText");
-
-            const resultId =
-                document.getElementById("resultId");
-
-
-            /*
-             * Empty input
-             */
-
-            if (!input) {
-
-                showResult(
-                    "error",
-                    "Status ID Required",
-                    "Please enter the Status ID sent to you by our team.",
-                    ""
-                );
-
-                return;
-            }
-
-
-            /*
-             * Show loading
-             */
-
-            loading.classList.add("show");
-
-            result.className = "status-result";
-
-            try {
-
-                /*
-                 * Cache busting prevents the browser from
-                 * showing an old status file.
-                 */
-
-                const response =
-                    await fetch(
-                        STATUS_FILE_URL +
-                        "?t=" +
-                        Date.now(),
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!response.ok) {
-                    throw new Error(
-                        "Unable to load status file."
-                    );
-                }
-
-
-                const data =
-                    await response.text();
-
-
-                /*
-                 * Find the Status ID.
-                 *
-                 * Status IDs are compared case-insensitively.
-                 */
-
-                const lines =
-                    data.split(/\r?\n/);
-
-                let foundStatus = null;
-
-
-                for (const rawLine of lines) {
-
-                    const line =
-                        rawLine.trim();
-
-
-                    /*
-                     * Ignore empty lines and comments.
-                     */
-
-                    if (
-                        !line ||
-                        line.startsWith("#")
-                    ) {
-                        continue;
-                    }
-
-
-                    /*
-                     * Split only at the first colon.
-                     */
-
-                    const separator =
-                        line.indexOf(":");
-
-
-                    if (separator === -1) {
-                        continue;
-                    }
-
-
-                    const id =
-                        line
-                            .substring(0, separator)
-                            .trim();
-
-                    const status =
-                        line
-                            .substring(separator + 1)
-                            .trim()
-                            .toLowerCase();
-
-
-                    if (
-                        id.toLowerCase() ===
-                        input.toLowerCase()
-                    ) {
-
-                        foundStatus = status;
-                        break;
-                    }
-                }
-
-
-                /*
-                 * Hide loading.
-                 */
-
-                loading.classList.remove("show");
-
-
-                /*
-                 * ID does not exist.
-                 */
-
-                if (foundStatus === null) {
-
-                    showResult(
-                        "error",
-                        "Status ID Not Found",
-                        "We couldn't find this Status ID. Please make sure you entered it correctly. If you recently applied, please wait for the Status ID email from our team.",
-                        input
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * APPROVED
-                 */
-
-                if (
-                    foundStatus === "true" ||
-                    foundStatus === "approved"
-                ) {
-
-                    showResult(
-                        "approved",
-                        "You're Already Approved!",
-                        "Congratulations! This Status ID is already approved for the Minecraft Mobile Tier List.",
-                        input
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * DENIED
-                 */
-
-                if (
-                    foundStatus === "false" ||
-                    foundStatus === "denied" ||
-                    foundStatus === "rejected"
-                ) {
-
-                    showResult(
-                        "denied",
-                        "Application Denied",
-                        "Unfortunately, this application was denied. The reason has been sent to the email address registered with your application. Please check your inbox and spam/junk folder.",
-                        input
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * PENDING
-                 */
-
-                if (
-                    foundStatus === "pending"
-                ) {
-
-                    showResult(
-                        "pending",
-                        "Application Pending",
-                        "Your application is currently pending. Please check your email for any verification or additional instructions from our team. Also check your spam or junk folder.",
-                        input
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * Unknown status
-                 */
-
-                showResult(
-                    "error",
-                    "Status Unavailable",
-                    "Your Status ID was found, but its current status isn't recognized. Please contact our team if this continues.",
-                    input
-                );
-
-
-            } catch (error) {
-
-                loading.classList.remove("show");
-
-                showResult(
-                    "error",
-                    "Couldn't Check Status",
-                    "We couldn't connect to the application status system right now. Please try again in a moment.",
-                    input
-                );
-
-                console.error(error);
-            }
-        }
-
-
-        /*
-         * ---------------------------------------------------------
-         * DISPLAY RESULT
-         * ---------------------------------------------------------
-         */
-
-        function showResult(
-            type,
-            titleText,
-            messageText,
-            id
-        ) {
-
-            const result =
-                document.getElementById("statusResult");
-
-            const title =
-                document.getElementById("resultTitle");
-
-            const text =
-                document.getElementById("resultText");
-
-            const resultId =
-                document.getElementById("resultId");
-
-
-            result.className =
-                "status-result show " +
-                type;
-
-
-            title.textContent =
-                titleText;
-
-
-            text.textContent =
-                messageText;
-
-
-            if (id) {
-
-                resultId.textContent =
-                    "Status ID: " + id;
-
-            } else {
-
-                resultId.textContent = "";
-            }
-        }
-
-
-        /*
-         * ---------------------------------------------------------
-         * ENTER KEY
-         * ---------------------------------------------------------
-         */
-
-        document
-            .getElementById("statusId")
-            .addEventListener(
-                "keydown",
-                function(event) {
-
-                    if (event.key === "Enter") {
-                        checkStatus();
-                    }
-
-                    if (event.key === "Escape") {
-                        closeStatus();
-                    }
-                }
-            );
-
-
-        /*
-         * ---------------------------------------------------------
-         * ESCAPE TO CLOSE
-         * ---------------------------------------------------------
-         */
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "Escape"
-                ) {
-                    closeStatus();
-                }
-
-            }
-        );
-
-    </script>
+  <main class="container">
+
+    <div class="badge">DOMAIN FOR SALE</div>
+
+    <div class="domain">minecraftmobile.in</div>
+
+    <h1>This Domain Is For Sale</h1>
+
+    <p class="subtitle">
+      A memorable domain for a Minecraft mobile community,
+      project, website, app, or brand.
+    </p>
+
+    <section class="card">
+
+      <div class="price-label">Current Price</div>
+      <div class="price">$8.99 USD</div>
+
+      <div class="detected">
+        <div class="detected-title">Your Detected Currency Price</div>
+        <div class="local-price" id="localPrice">Detecting...</div>
+        <div class="rate" id="rateText"></div>
+      </div>
+
+      <div class="currency-row">
+        <select id="currency">
+          <option value="USD">🇺🇸 USD — US Dollar</option>
+          <option value="INR">🇮🇳 INR — Indian Rupee</option>
+          <option value="EUR">🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — British Pound</option>
+          <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+          <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+          <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+          <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+          <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+          <option value="KRW">🇰🇷 KRW — Korean Won</option>
+        </select>
+      </div>
+
+      <button class="buy-btn" onclick="showContact()">
+        Buy This Domain
+      </button>
+
+      <div class="contact" id="contact">
+        <h3>Interested in buying?</h3>
+
+        <a href="https://discord.gg/c3AtVutT" target="_blank">
+          <span>DISCORD</span>
+          discord.gg/c3AtVutT
+        </a>
+
+        <a href="mailto:contact@hazik.in">
+          <span>EMAIL</span>
+          contact@hazik.in
+        </a>
+      </div>
+
+    </section>
+
+    <footer>
+      © 2026 minecraftmobile.in
+    </footer>
+
+  </main>
+
+  <script>
+    const USD_PRICE = 8.99;
+
+    const currencySymbols = {
+      USD: "$",
+      INR: "₹",
+      EUR: "€",
+      GBP: "£",
+      CAD: "C$",
+      AUD: "A$",
+      JPY: "¥",
+      CNY: "¥",
+      BRL: "R$",
+      KRW: "₩"
+    };
+
+    const currencyRates = {
+      USD: 1,
+      INR: 95.9355,
+      EUR: 0.87,
+      GBP: 0.75,
+      CAD: 1.38,
+      AUD: 1.53,
+      JPY: 147,
+      CNY: 6.89,
+      BRL: 4.85,
+      KRW: 1390
+    };
+
+    const currencySelect = document.getElementById("currency");
+    const localPrice = document.getElementById("localPrice");
+    const rateText = document.getElementById("rateText");
+
+    function formatPrice(amount, currency) {
+      return new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: currency,
+        maximumFractionDigits: currency === "JPY" || currency === "KRW" ? 0 : 2
+      }).format(amount);
+    }
+
+    function updatePrice(currency) {
+      const rate = currencyRates[currency];
+      const converted = USD_PRICE * rate;
+
+      localPrice.textContent = formatPrice(converted, currency);
+
+      rateText.textContent =
+        `1 USD ≈ ${rate.toLocaleString()} ${currency}`;
+    }
+
+    function detectCurrency() {
+      const locale = navigator.language || "en-US";
+
+      let currency = "USD";
+
+      if (locale.includes("-IN") || locale.startsWith("hi")) {
+        currency = "INR";
+      } else if (locale.startsWith("de") ||
+                 locale.startsWith("fr") ||
+                 locale.startsWith("es") ||
+                 locale.startsWith("it") ||
+                 locale.startsWith("nl")) {
+        currency = "EUR";
+      } else if (locale.startsWith("en-GB")) {
+        currency = "GBP";
+      } else if (locale.startsWith("ja")) {
+        currency = "JPY";
+      } else if (locale.startsWith("zh")) {
+        currency = "CNY";
+      } else if (locale.startsWith("ko")) {
+        currency = "KRW";
+      } else if (locale.startsWith("pt-BR")) {
+        currency = "BRL";
+      }
+
+      currencySelect.value = currency;
+      updatePrice(currency);
+    }
+
+    currencySelect.addEventListener("change", () => {
+      updatePrice(currencySelect.value);
+    });
+
+    function showContact() {
+      const contact = document.getElementById("contact");
+
+      contact.classList.toggle("show");
+
+      if (contact.classList.contains("show")) {
+        contact.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+      }
+    }
+
+    detectCurrency();
+  </script>
 
 </body>
 </html>
